@@ -161,7 +161,7 @@ customers:
 orders:
 <img width="1902" height="517" alt="image" src="https://github.com/user-attachments/assets/fe99a68a-8950-4d87-82c1-25dcd3217a65" />
 
-- The ERD screenshot from Supabase looks like this: 
+- The ERD screenshot from Supabase looks like this : 
 <img width="1064" height="577" alt="image" src="https://github.com/user-attachments/assets/4b8a39b1-ff20-4bd3-be6f-f662b35ae49f" />
 
 - To test the table, I used two queries: 
