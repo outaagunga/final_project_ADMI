@@ -146,19 +146,19 @@ snippet of customers table
 <img width="1893" height="476" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/customers.png" />
 
 snippet of products table:
-<img width="1881" height="445" alt="image" src="data_tools/docs/products.png" />
+<img width="1881" height="445" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/products.png)" />
 
 snippets of orders table:
-<img width="1881" height="505" alt="image" src="data_tools\docs\orders.png" />
+<img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/orders.png)" />
 
 snippets of customer and their order details:
-<img width="1881" height="505" alt="image" src="data_tools\docs\customer_and_their_orders.png" />
+<img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/customers_and_their_orders.png" />
 
 snippets of order details:
-<img width="1881" height="505" alt="image" src="data_tools\docs\order_details.png" />
+<img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/orders_details.png" />
 
 snippets of total reveue:
-<img width="1881" height="505" alt="image" src="data_tools\docs\total_revenue.png" />
+<img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/total_revenue.png" />
 
 
 - Visual snippet of ERD diagram as viewed in the supabase: 
