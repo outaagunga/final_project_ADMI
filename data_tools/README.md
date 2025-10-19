@@ -138,23 +138,30 @@ INSERT INTO orders (customer_id, product_id, quantity) VALUES
 (4, 5, 1),
 (5, 3, 3);
 
-
 ```
 
-- The Tables should look like this in Supabase:
-authors
-<img width="1893" height="476" alt="image" src="https://github.com/user-attachments/assets/9a89f3ae-77d1-4ed2-a5c5-140db1e7e27b" />
+- This is the visual snipppet of how the different tables look in the supabase:  
 
-books:
-<img width="1881" height="445" alt="image" src="https://github.com/user-attachments/assets/d741319f-a0ff-416c-b50f-34c315c9af24" />
+snippet of customers table
+<img width="1893" height="476" alt="image" src="data_tools\docs\customers.png" />
 
-customers:
-<img width="1881" height="505" alt="image" src="https://github.com/user-attachments/assets/354752e6-fa32-4aa8-a28f-bf99f98039f2" />
+snippet of products table:
+<img width="1881" height="445" alt="image" src="data_tools\docs\products.png" />
 
-orders:
-<img width="1902" height="517" alt="image" src="https://github.com/user-attachments/assets/fe99a68a-8950-4d87-82c1-25dcd3217a65" />
+snippets of orders table:
+<img width="1881" height="505" alt="image" src="data_tools\docs\orders.png" />
 
-- The ERD screenshot from Supabase looks like this : 
+snippets of customer and their order details:
+<img width="1881" height="505" alt="image" src="data_tools\docs\customer_and_their_orders.png" />
+
+snippets of order details:
+<img width="1881" height="505" alt="image" src="data_tools\docs\order_details.png" />
+
+snippets of total reveue:
+<img width="1881" height="505" alt="image" src="data_tools\docs\total_revenue.png" />
+
+
+- Visual snippet of ERD diagram as viewed in the supabase: 
 <img width="1064" height="577" alt="image" src="https://github.com/user-attachments/assets/4b8a39b1-ff20-4bd3-be6f-f662b35ae49f" />
 
 - To test the table, I used two queries: 
