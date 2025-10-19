@@ -143,7 +143,7 @@ INSERT INTO orders (customer_id, product_id, quantity) VALUES
 - This is the visual snipppet of how the different tables look in the supabase:  
 
 snippet of customers table
-<img width="1893" height="476" alt="image" src="data_tools\docs\customers.png" />
+<img width="1893" height="476" alt="image" src="https://github.com/data_tools\docs\customers.png" />
 
 snippet of products table:
 <img width="1881" height="445" alt="image" src="data_tools\docs\products.png" />
