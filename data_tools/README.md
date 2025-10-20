@@ -73,7 +73,7 @@ The database supports typical e-commerce operations:
 - Each **customer** can place **many orders**  
 - Each **order** links to a **product**  
 
-![ERD Diagram](./docs/ecommerce_erd.png)
+![ERD Diagram](https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/ERD_Diagram.png)
 
 ---  
 
