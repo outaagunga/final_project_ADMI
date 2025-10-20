@@ -5,7 +5,7 @@
 
 <!-- TABLE OF CONTENTS -->
 
-# 📗 Table of Contents
+## 📗 Table of Contents
 
 - [My SQL Project](#about-project)
 - [📗 Table of Contents](#-table-of-contents)
@@ -23,15 +23,15 @@
 
 <!-- PROJECT DESCRIPTION -->
 
-# 📖 Jeco E-Commerce SQL Project <a name="about-project"></a>
+## 📖 Jeco E-Commerce SQL Project <a name="about-project"></a>
 
 **Jeco E-commerce SQL Project** is a simple Database that uses SQL, Postgres via Supabase to create, query and secure **E-Commerce** database.
 
 ## 🛠 Built With <a name="built-with"></a>
 
 ### Tech Stack <a name="tech-stack"></a>
-- SQL
-- Postgres DB
+- `SQL`
+- `Postgres DB`
 
 <!-- Features -->
 
@@ -91,6 +91,7 @@ Then change directory to the project directory, i,e
  cd final_project_ADMI
 ``` 
 
+---
 <!-- ### Database Creation -->
 
 ### Database Schema
@@ -99,7 +100,7 @@ Then change directory to the project directory, i,e
 Each table has atleast 5 entries (rows)   
 - To create the table, you will need a schema as shown below:
 
-Open Supabase SQL Editor and paste the contents of:  
+- i.e, open Supabase SQL Editor and paste the contents of:  
 
 - `/sql/schema.sql`  
 - `/sql/sample_data.sql`  
@@ -179,22 +180,27 @@ INSERT INTO orders (customer_id, product_id, quantity) VALUES
 - Customers table:  
 <img width="1893" height="476" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/customers.png" />
 
+--- 
 - Products table:  
 <img width="1881" height="445" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/products.png" />
 
+---
 - Orders table:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/orders.png" />
 
+---
 - Customer and Order details:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/customer_and_their_orders.png" />
 
+---
 - Order details:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/order_details.png" />
 
+---
 - Total Reveue:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/total_revenue.png" />
 
-
+--- 
 - ERD diagram as viewed in the supabase:  
 <img width="1064" height="577" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/ERD_Diagram.png" />
 
@@ -240,9 +246,9 @@ GROUP BY c.full_name;
 
 👤 **Joy Phoebe**
 
-- GitHub: [@joyapisi](https://github.com/joyapisi)
-- Twitter: [@joyphoebe300](https://twitter.com/joyphoebe300)
-- LinkedIn: [@joyapisi](https://linkedin.com/in/joyapisi)
+- GitHub: [@outaagunga](https://github.com/outaagunga)
+- Twitter: [@jeconiaouta](https://twitter.com/jeconiaouta)
+- LinkedIn: [@outaagunga](https://linkedin.com/in/outaagunga)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -251,7 +257,7 @@ GROUP BY c.full_name;
 ## 🔭 Future Features <a name="future-features"></a>
 
 - [ ] **Add security**
-- [ ] **Link DB to R for visualisation purposes and further analyses**
+- [ ] **Link DB to R for visualisation purposes and further analysis**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
