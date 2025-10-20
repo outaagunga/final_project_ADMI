@@ -244,7 +244,7 @@ GROUP BY c.full_name;
 
 ## 👥 Authors <a name="authors"></a>
 
-👤 **Joy Phoebe**
+👤 **Outa Agunga**
 
 - GitHub: [@outaagunga](https://github.com/outaagunga)
 - Twitter: [@jeconiaouta](https://twitter.com/jeconiaouta)
