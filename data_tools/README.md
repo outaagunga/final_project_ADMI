@@ -62,14 +62,15 @@ To run this project, you need:
 This project is a simple **E-commerce database** built using **Supabase (PostgreSQL)**.  
 It demonstrates key database design principles including normalization, relationships, and data integrity.
 
-## 🧱 Database Schema Overview
+🧱 **Database Schema Overview**
 The database supports typical e-commerce operations:  
+
 ### Tables
 1. **customers** — stores customer details  
 2. **products** — stores product listings  
-3. **orders** — records customer purchases
+3. **orders** — records customer purchases  
 
-### Relationships
+### Relationships  
 - Each **customer** can place **many orders**  
 - Each **order** links to a **product**  
 
@@ -81,26 +82,29 @@ The database supports typical e-commerce operations:
 ### Setup
 
 Clone this repository for the E- Commerce Database to your desired folder on the local machine (pc):
-
 ```sh
   git clone https://github.com/outaagunga/final_project_ADMI.git
-  
-  # then change directory to the project directory, i,e 
-  cd final_project_ADMI
 ```
+
+Then change directory to the project directory, i,e  
+```sql
+ cd final_project_ADMI
+``` 
 
 <!-- ### Database Creation -->
 
 ### Database Schema
 
-- The Database is made up of 3 tables ie `customers`, `products` and `orders`. Eaach table has atleast 5 entries (rows).  
+- The Database is made up of 3 tables ie `customers`, `products` and `orders`.  
+Each table has atleast 5 entries (rows)   
 - To create the table, you will need a schema as shown below:
 
-Open Supabase SQL Editor and paste the contents of:
+Open Supabase SQL Editor and paste the contents of:  
 
-`/sql/schema.sql`
-`/sql/sample_data.sql`  
+- `/sql/schema.sql`  
+- `/sql/sample_data.sql`  
 
+--- 
 For example:  
 
 ```sql
@@ -166,41 +170,45 @@ INSERT INTO orders (customer_id, product_id, quantity) VALUES
 (4, 5, 1),
 (5, 3, 3);
 
-```
+```  
 
-- This is the visual snipppet of how the different tables look in the supabase:  
+---
 
-snippet of customers table
+**This is the visual snipppet of how the different tables look in the supabase:**  
+
+- Customers table:  
 <img width="1893" height="476" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/customers.png" />
 
-snippet of products table:
+- Products table:  
 <img width="1881" height="445" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/products.png" />
 
-snippets of orders table:
+- Orders table:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/orders.png" />
 
-snippets of customer and their order details:
+- Customer and Order details:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/customer_and_their_orders.png" />
 
-snippets of order details:
+- Order details:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/order_details.png" />
 
-snippets of total reveue:
+- Total Reveue:  
 <img width="1881" height="505" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/total_revenue.png" />
 
 
-- Visual snippet of ERD diagram as viewed in the supabase: 
+- ERD diagram as viewed in the supabase:  
 <img width="1064" height="577" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/ERD_Diagram.png" />
 
-- To test the table, I used the queries:  
+---
 
-Get All Customers  
+**To test the table, I used the queries:**    
+
+- Get All Customers  
 ```sql
 SELECT * 
 FROM customers;
 ```
 
-Get Order Details (with Customer & Product Info)  
+- Get Order Details (with Customer & Product Info)  
 ```sql
 SELECT o.order_id, c.full_name, p.product_name, o.quantity, o.total_amount
 FROM orders o
@@ -208,12 +216,12 @@ JOIN customers c ON o.customer_id = c.customer_id
 JOIN products p ON o.product_id = p.product_id;
 ```
 
-Calculate Total Revenue  
+- Calculate Total Revenue  
 ```sql
 SELECT SUM(total_amount) AS total_revenue FROM orders;
 ```
 
-Show customers and their total orders  
+- Show customers and their total orders  
 ```sql
 SELECT c.full_name, COUNT(o.order_id) AS total_orders
 FROM customers c
@@ -221,9 +229,8 @@ LEFT JOIN orders o ON c.customer_id = o.customer_id
 GROUP BY c.full_name;
 ```
 
+---
 
-- Here are the results of the queries:
-<img width="1460" height="791" alt="image" src="https://github.com/user-attachments/assets/37cf0a4e-ca92-4d8d-8888-2cca0165d32b" />
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
