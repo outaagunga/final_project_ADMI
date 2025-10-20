@@ -56,6 +56,27 @@ To run this project, you need:
 - [Knowledge on SQL](https://www.w3schools.com/sql/)
 - A schema for creating your tables in the E-commerce Database
 
+--- 
+<!-- ### Project Overview -->
+
+This project is a simple **E-commerce database** built using **Supabase (PostgreSQL)**.  
+It demonstrates key database design principles including normalization, relationships, and data integrity.
+
+## 🧱 Database Schema Overview
+The database supports typical e-commerce operations:  
+### Tables
+1. **customers** — stores customer details  
+2. **products** — stores product listings  
+3. **orders** — records customer purchases
+
+### Relationships
+- Each **customer** can place **many orders**  
+- Each **order** links to a **product**  
+
+![ERD Diagram](./docs/ecommerce_erd.png)
+
+---  
+
 <!-- ### Setup -->
 ### Setup
 
@@ -72,8 +93,15 @@ Clone this repository for the E- Commerce Database to your desired folder on the
 
 ### Database Schema
 
-- The Database is made up of 3 tables ie `customers`, `products` and `orders`. Eaach table has atleast 5 entries (rows).
+- The Database is made up of 3 tables ie `customers`, `products` and `orders`. Eaach table has atleast 5 entries (rows).  
 - To create the table, you will need a schema as shown below:
+
+Open Supabase SQL Editor and paste the contents of:
+
+`/sql/schema.sql`
+`/sql/sample_data.sql`  
+
+For example:  
 
 ```sql
 -- Drop old tables if they exist
@@ -162,19 +190,37 @@ snippets of total reveue:
 
 
 - Visual snippet of ERD diagram as viewed in the supabase: 
-<img width="1064" height="577" alt="image" src="https://github.com/user-attachments/assets/4b8a39b1-ff20-4bd3-be6f-f662b35ae49f" />
+<img width="1064" height="577" alt="image" src="https://github.com/outaagunga/final_project_ADMI/blob/working/data_tools/docs/ERD_Diagram.png" />
 
-- To test the table, I used two queries: 
+- To test the table, I used the queries:  
 
+Get All Customers  
 ```sql
-SELECT * FROM orders
-WHERE name = "Nadine Gordimer"
-````
+SELECT * 
+FROM customers;
+```
 
+Get Order Details (with Customer & Product Info)  
 ```sql
-SELECT * FROM books
-WHERE in_stock = "TRUE"
-````
+SELECT o.order_id, c.full_name, p.product_name, o.quantity, o.total_amount
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN products p ON o.product_id = p.product_id;
+```
+
+Calculate Total Revenue  
+```sql
+SELECT SUM(total_amount) AS total_revenue FROM orders;
+```
+
+Show customers and their total orders  
+```sql
+SELECT c.full_name, COUNT(o.order_id) AS total_orders
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.full_name;
+```
+
 
 - Here are the results of the queries:
 <img width="1460" height="791" alt="image" src="https://github.com/user-attachments/assets/37cf0a4e-ca92-4d8d-8888-2cca0165d32b" />
