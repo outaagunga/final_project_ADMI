@@ -1,7 +1,7 @@
 # 📘 Data Dictionary — E-Commerce Database
 
-This document provides a comprehensive description of all tables, columns, constraints, and relationships in the e-commerce database.  
-It serves as a reference for developers, analysts, and maintainers working with the Supabase-hosted schema.
+This document provides a comprehensive description of all tables, columns, constraints, and relationships in the e-commerce database.   
+It serves as a reference for developers, analysts, and maintainers working with the Supabase-hosted schema.  
 
 ---
 
