@@ -393,3 +393,7 @@ DROP POLICY IF EXISTS products_user_select_all ON products;
 DROP POLICY IF EXISTS app_users_admin_all ON app_users;
 DROP POLICY IF EXISTS app_users_user_select_own ON app_users;
 
+
+DROP FUNCTION IF EXISTS set_local_user;
+DROP FUNCTION IF EXISTS set_local_user(uuid);
+DROP FUNCTION IF EXISTS current_local_user_id();
