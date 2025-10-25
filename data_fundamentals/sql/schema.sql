@@ -1,5 +1,4 @@
 
-
 --Creating a app_users table to store users and their roles
 CREATE TABLE app_users (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),  -- auto-generate UUIDs automatically for development use
@@ -311,12 +310,23 @@ VALUES
 
 --Setting up Helper Function to test as specific users
 -- Create a helper to simulate "logged in" user sessions
-CREATE OR REPLACE FUNCTION set_local_user(uid uuid)
+-- Create a helper to simulate logged-in user
+CREATE OR REPLACE FUNCTION current_app_user_id()
+RETURNS uuid AS $$
+  SELECT current_setting('app.current_user', true)::uuid;
+$$ LANGUAGE sql STABLE;
+
+-- Helper to set the simulated user id
+CREATE OR REPLACE FUNCTION set_app_user(uid uuid)
 RETURNS void AS $$
 BEGIN
-  PERFORM set_config('request.jwt.claims', json_build_object('sub', uid)::text, true);
+  PERFORM set_config('app.current_user', uid::text, false);
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+
 
 --Test as Admin 
 -- 🧑‍💼 Simulate admin login
@@ -361,4 +371,25 @@ SELECT * FROM orders WHERE user_id = '33333333-3333-3333-3333-333333333333';
 -- ❌ Should NOT update another user’s order
 UPDATE orders SET quantity = 5 WHERE user_id = '33333333-3333-3333-3333-333333333333' RETURNING *;
 
+
+-- Drop all policies for all your main tables
+DROP POLICY IF EXISTS customers_admin_all ON customers;
+DROP POLICY IF EXISTS customers_user_select_own ON customers;
+DROP POLICY IF EXISTS customers_user_insert_own ON customers;
+DROP POLICY IF EXISTS customers_user_update_own ON customers;
+DROP POLICY IF EXISTS customers_user_delete_own ON customers;
+
+DROP POLICY IF EXISTS orders_admin_all ON orders;
+DROP POLICY IF EXISTS orders_user_select_own ON orders;
+DROP POLICY IF EXISTS orders_user_insert_own ON orders;
+DROP POLICY IF EXISTS orders_user_update_own ON orders;
+DROP POLICY IF EXISTS orders_user_delete_own ON orders;
+
+DROP POLICY IF EXISTS products_admin_all ON products;
+DROP POLICY IF EXISTS products_user_insert ON products;
+DROP POLICY IF EXISTS products_user_update_own ON products;
+DROP POLICY IF EXISTS products_user_select_all ON products;
+
+DROP POLICY IF EXISTS app_users_admin_all ON app_users;
+DROP POLICY IF EXISTS app_users_user_select_own ON app_users;
 
