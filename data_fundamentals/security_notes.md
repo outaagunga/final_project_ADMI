@@ -164,6 +164,5 @@ Testing was performed using Supabase’s SQL Editor:
 👤 **Author:** Outa Agunga
 🔗 [GitHub: @outaagunga](https://github.com/outaagunga)
 
-```
 
 ---
