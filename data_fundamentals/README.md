@@ -1,7 +1,4 @@
 
----
-
-````markdown
 # 🧱 Data Fundamentals Project: Admin Roles & Security in Supabase
 
 <a name="readme-top"></a>
