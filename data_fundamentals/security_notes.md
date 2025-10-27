@@ -1,5 +1,4 @@
 
-````markdown
 # 🔐 Security Notes — Supabase Admin Roles & RLS Setup
 
 ## 🧱 Project Overview

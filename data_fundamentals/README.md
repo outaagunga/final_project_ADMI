@@ -19,10 +19,10 @@
 
 ## 📖 Overview <a name="overview"></a>
 
-This project is part of the **Data Fundamentals Unit (Week 1–4)**.  
+This project is part of the **Data Fundamentals Unit**.  
 It focuses on applying **data access control, admin privileges, and Row-Level Security (RLS)** using **Supabase (PostgreSQL)**.
 
-> 🎯 **Goal:** Learn how to manage user roles, enforce least privilege, and document a secure data model.
+> **Goal:** is to learn how to manage user roles, enforce least privilege, and document a secure data model.
 
 ---
 
@@ -44,7 +44,7 @@ It focuses on applying **data access control, admin privileges, and Row-Level Se
 ## 🧩 Database Design <a name="database-design"></a>
 
 This project extends the **E-Commerce SQL Project** from the previous unit.  
-It includes **3 core data tables** and a new **app_users** table for managing user roles and authentication links.
+It includes **3 core data tables** and a new **`app_users`** table for managing user roles and authentication links.
 
 ### Tables
 1. **app_users** — stores user accounts and their assigned roles  
@@ -205,7 +205,7 @@ INSERT INTO customers (...) VALUES (...);  -- should fail
 
 ---
 
-## 🧠 Key Learnings <a name="key-learnings"></a>
+## 🧠 Key Areas Covered  <a name="key-learnings"></a>
 
 * How to implement **Row-Level Security (RLS)** in PostgreSQL
 * How to link **Supabase Auth users** with app-specific roles
