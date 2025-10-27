@@ -1,5 +1,4 @@
-
---Creating a app_users table to store users and their roles
+--Creating app_users table to hold different users roles 
 CREATE TABLE app_users (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),  -- auto-generate UUIDs automatically for development use
   email text NOT NULL UNIQUE,
@@ -20,7 +19,7 @@ VALUES
 ('david@example.com', 'user'),
 ('eva@example.com', 'user');
 
--- Creating tables for our project
+-- Creating tables for my project
 -- 1️⃣ Create customers table
 CREATE TABLE customers (
   customer_id SERIAL PRIMARY KEY,
@@ -54,7 +53,7 @@ CREATE TABLE orders (
   order_date TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
--- adding triggers to autocalculate total amount incase it fails
+-- added trigger to autoupdate total total amount
 -- helper function
 CREATE OR REPLACE FUNCTION calculate_order_total()
 RETURNS TRIGGER AS $$
@@ -79,7 +78,7 @@ BEFORE INSERT OR UPDATE ON orders
 FOR EACH ROW
 EXECUTE FUNCTION calculate_order_total();
 
--- inserting sample data to our tables
+-- Inserting data to our tables
 -- Customers
 INSERT INTO customers (full_name, email, phone, city)
 VALUES
@@ -95,8 +94,6 @@ VALUES
 INSERT INTO products (product_name, category, price, stock_quantity)
 VALUES
 ('Wireless Mouse', 'Electronics', 1200.00, 50),
-('Micro Wave', 'Household', 7500.00, 17),
-('Casio Calcualtor', 'Electronics', 2500.00, 21),
 ('Laptop Backpack', 'Accessories', 2500.00, 30),
 ('USB Flash Drive 64GB', 'Storage', 1500.00, 40),
 ('Bluetooth Speaker', 'Electronics', 4500.00, 20),
@@ -109,32 +106,66 @@ VALUES
 (2, 1, 2),
 (3, 4, 1),
 (4, 5, 1),
-(5, 3, 3),
-(6, 3, 3),
-(7, 3, 3);
+(5, 3, 3);
 
--- linking customers table to users table using uuid
+-- Linking customers to our app_users
+--Customers table
 UPDATE customers AS c
 SET user_id = au.id
 FROM app_users AS au
 WHERE LOWER(TRIM(c.email)) = LOWER(TRIM(au.email))
   AND c.user_id IS NULL;
 
-  --also update tables for orders
+--Orders table
 UPDATE orders AS o
 SET user_id = c.user_id
 FROM customers AS c
 WHERE o.customer_id = c.customer_id
   AND o.user_id IS NULL;
 
--- Enable RLS security on all tables
+--Confirming if new customer details is populated correctly
+SELECT *
+FROM customers;
+
+
+--Confirming if new products details is populated correctly
+SELECT *
+FROM products;
+
+--Confirming if new orders details is populated correctly
+SELECT *
+FROM products;
+
+
+--adding a trigger so that next time if insert customers by email, the user_id does not display null
+CREATE OR REPLACE FUNCTION link_customer_to_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE customers
+  SET user_id = u.id
+  FROM auth.users u
+  WHERE LOWER(TRIM(customers.email)) = LOWER(TRIM(u.email))
+  AND customers.customer_id = NEW.customer_id;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_link_customer_user
+AFTER INSERT ON customers
+FOR EACH ROW
+EXECUTE FUNCTION link_customer_to_user();
+
+--Enable RLS on All Application Tables
 ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 
+-- Verify RLS are Enabled on all app tables
+SELECT schemaname, tablename, rowsecurity
+FROM pg_tables
+WHERE schemaname = 'public';
 
-
--- revoke all default public access
+--  Revoke Default Public Access
 -- Customers
 REVOKE ALL ON customers FROM PUBLIC;
 GRANT SELECT, INSERT, UPDATE, DELETE ON customers TO authenticated;
@@ -147,136 +178,117 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON products TO authenticated;
 REVOKE ALL ON orders FROM PUBLIC;
 GRANT SELECT, INSERT, UPDATE, DELETE ON orders TO authenticated;
 
-
---Policies on customers table 
-
+-- Define Policies
 -- 1️⃣ Admin: full visibility and control
 CREATE POLICY customers_admin_all ON customers
 FOR ALL
 USING (
   EXISTS (
     SELECT 1 FROM app_users au
-    WHERE au.id = auth.uid() AND au.role = 'admin'
+    WHERE au.id = current_app_user_id()
+      AND au.role = 'admin'
   )
 )
 WITH CHECK (
   EXISTS (
     SELECT 1 FROM app_users au
-    WHERE au.id = auth.uid() AND au.role = 'admin'
+    WHERE au.id = current_app_user_id()
+      AND au.role = 'admin'
   )
 );
-
 
 -- 2️⃣ Users: view only their own profile
 CREATE POLICY customers_user_select_own ON customers
 FOR SELECT
 USING (
-  user_id = auth.uid()
+  user_id = current_app_user_id()
 );
-
 
 -- 3️⃣ Users: insert only their own record
 CREATE POLICY customers_user_insert_own ON customers
 FOR INSERT
 WITH CHECK (
-  user_id = auth.uid()
+  user_id = current_app_user_id()
 );
-
 
 -- 4️⃣ Users: update their own record
 CREATE POLICY customers_user_update_own ON customers
 FOR UPDATE
 USING (
-  user_id = auth.uid()
+  user_id = current_app_user_id()
 )
 WITH CHECK (
-  user_id = auth.uid()
+  user_id = current_app_user_id()
 );
-
 
 -- 5️⃣ Users: delete their own profile
 CREATE POLICY customers_user_delete_own ON customers
 FOR DELETE
 USING (
-  user_id = auth.uid()
+  user_id = current_app_user_id()
 );
 
---Polies on orders table
+-- policy on orders table
 -- 1️⃣ Admin: full access
 CREATE POLICY orders_admin_all ON orders
 FOR ALL
 USING (
   EXISTS (
     SELECT 1 FROM app_users au
-    WHERE au.role = 'admin'
+    WHERE au.id = current_app_user_id()
+      AND au.role = 'admin'
   )
 )
 WITH CHECK (
   EXISTS (
     SELECT 1 FROM app_users au
-    WHERE au.role = 'admin'
+    WHERE au.id = current_app_user_id()
+      AND au.role = 'admin'
   )
 );
-
 
 -- 2️⃣ Users: view only their own orders
 CREATE POLICY orders_user_select_own ON orders
 FOR SELECT
 USING (
-  EXISTS (
-    SELECT 1 FROM app_users au
-    WHERE au.id = orders.user_id
-  )
+  user_id = current_app_user_id()
 );
-
 
 -- 3️⃣ Users: insert orders only for themselves
 CREATE POLICY orders_user_insert_own ON orders
 FOR INSERT
 WITH CHECK (
-  EXISTS (
-    SELECT 1 FROM app_users au
-    WHERE au.id = orders.user_id
-  )
+  user_id = current_app_user_id()
 );
-
 
 -- 4️⃣ Users: update their own orders
 CREATE POLICY orders_user_update_own ON orders
 FOR UPDATE
 USING (
-  EXISTS (
-    SELECT 1 FROM app_users au
-    WHERE au.id = orders.user_id
-  )
+  user_id = current_app_user_id()
 )
 WITH CHECK (
-  EXISTS (
-    SELECT 1 FROM app_users au
-    WHERE au.id = orders.user_id
-  )
+  user_id = current_app_user_id()
 );
-
 
 -- 5️⃣ Users: delete their own orders
 CREATE POLICY orders_user_delete_own ON orders
 FOR DELETE
 USING (
-  EXISTS (
-    SELECT 1 FROM app_users au
-    WHERE au.id = orders.user_id
-  )
+  user_id = current_app_user_id()
 );
 
--- List all policies we've created
+-- List all policies you've created
 SELECT tablename, policyname, permissive, roles, cmd
 FROM pg_policies
 WHERE schemaname = 'public';
 
+-- check if the current user is bypassing the the session roles on RLS policy
+SELECT tablename, policyname, permissive, roles, cmd, qual
+FROM pg_policies
+WHERE tablename IN ('customers', 'orders');
 
---Test and Validate Policies 
-
---Prepare Mock Data- We’ll simulate a few users and sample data to test policies.
+-- Test and Validate Policies
 -- 👥 Create 2 fake app users (acting as Supabase Auth substitutes)
 INSERT INTO app_users (id, email, role)
 VALUES
@@ -307,9 +319,6 @@ VALUES
   (1, 1, 1, '22222222-2222-2222-2222-222222222222'),
   (2, 2, 2, '33333333-3333-3333-3333-333333333333');
 
-
---Setting up Helper Function to test as specific users
--- Create a helper to simulate "logged in" user sessions
 -- Create a helper to simulate logged-in user
 CREATE OR REPLACE FUNCTION current_app_user_id()
 RETURNS uuid AS $$
@@ -325,12 +334,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-
-
-
---Test as Admin 
 -- 🧑‍💼 Simulate admin login
-SELECT set_local_user('11111111-1111-1111-1111-111111111111');
+SELECT set_app_user('11111111-1111-1111-1111-111111111111');
 
 -- ✅ Admin should see all customers
 SELECT * FROM customers;
@@ -339,61 +344,40 @@ SELECT * FROM customers;
 SELECT * FROM orders;
 
 -- ✅ Admin can update anyone’s order
-UPDATE orders SET quantity = 10 WHERE order_id = 1 RETURNING *;
+UPDATE orders
+SET quantity = 10
+WHERE order_id = 1
+RETURNING *;
 
 -- ✅ Admin can insert new products
 INSERT INTO products (product_name, category, price)
 VALUES ('Tablet', 'Electronics', 40000)
 RETURNING *;
 
--- Test as Regular User (User1)
 -- 👤 Simulate user1 login
-SELECT set_local_user('22222222-2222-2222-2222-222222222222');
+SELECT set_app_user('22222222-2222-2222-2222-222222222222');
 
 -- ✅ Should only see their own customer record
---Not working
 SELECT * FROM customers;
 
 -- ✅ Should only see their own orders
---Not working
 SELECT * FROM orders;
 
 -- ✅ Can create their own order
---Not working
 INSERT INTO orders (customer_id, product_id, quantity, user_id)
 VALUES (1, 3, 1, '22222222-2222-2222-2222-222222222222')
 RETURNING *;
 
 -- ❌ Should NOT see other users' orders
---Not working
-SELECT * FROM orders WHERE user_id = '33333333-3333-3333-3333-333333333333';
+SELECT * FROM orders
+WHERE user_id = '33333333-3333-3333-3333-333333333333';
 
 -- ❌ Should NOT update another user’s order
-UPDATE orders SET quantity = 5 WHERE user_id = '33333333-3333-3333-3333-333333333333' RETURNING *;
+UPDATE orders
+SET quantity = 5
+WHERE user_id = '33333333-3333-3333-3333-333333333333';
+
+-- Check current login users
+SELECT current_app_user_id();
 
 
--- Drop all policies for all your main tables
-DROP POLICY IF EXISTS customers_admin_all ON customers;
-DROP POLICY IF EXISTS customers_user_select_own ON customers;
-DROP POLICY IF EXISTS customers_user_insert_own ON customers;
-DROP POLICY IF EXISTS customers_user_update_own ON customers;
-DROP POLICY IF EXISTS customers_user_delete_own ON customers;
-
-DROP POLICY IF EXISTS orders_admin_all ON orders;
-DROP POLICY IF EXISTS orders_user_select_own ON orders;
-DROP POLICY IF EXISTS orders_user_insert_own ON orders;
-DROP POLICY IF EXISTS orders_user_update_own ON orders;
-DROP POLICY IF EXISTS orders_user_delete_own ON orders;
-
-DROP POLICY IF EXISTS products_admin_all ON products;
-DROP POLICY IF EXISTS products_user_insert ON products;
-DROP POLICY IF EXISTS products_user_update_own ON products;
-DROP POLICY IF EXISTS products_user_select_all ON products;
-
-DROP POLICY IF EXISTS app_users_admin_all ON app_users;
-DROP POLICY IF EXISTS app_users_user_select_own ON app_users;
-
-
-DROP FUNCTION IF EXISTS set_local_user;
-DROP FUNCTION IF EXISTS set_local_user(uuid);
-DROP FUNCTION IF EXISTS current_local_user_id();
