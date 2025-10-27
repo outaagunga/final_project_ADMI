@@ -233,7 +233,4 @@ INSERT INTO customers (...) VALUES (...);  -- should fail
 ---
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-```
-
----
 
